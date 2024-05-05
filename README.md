@@ -31,3 +31,11 @@
    `import "fmt"`
 
 5. to execute the program `go run main.go`
+
+6. Go compile errors to enforce better code qualit. ex - Variables names must be used.
+
+   - To avoid possible dead code, code that is never used in the code
+
+7. Defining variables - `var conferenceName = "Go Conference"`
+
+8. Defininf constant - `const conferenceTickets = 50`
