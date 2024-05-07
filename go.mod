@@ -1,3 +1,3 @@
-module booking-app
+module hello
 
 go 1.22.2
