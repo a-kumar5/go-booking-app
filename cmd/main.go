@@ -1,10 +1,14 @@
 package main
 
 import (
-	//"fmt"
-	"hello"
-	//"os"
+	"fmt"
+	"io"
+	"os"
 )
+
+//"fmt"
+//"hello"
+//"os"
 
 func main() {
 	//fmt.Println(hello.Say(os.Args[1:]))
@@ -14,5 +18,18 @@ func main() {
 	//fmt.Println(w, x, y)
 	// sorting - map examples
 
-	hello.Sort()
+	// hello.Sort()
+	for _, fname := range os.Args[1:] {
+		file, err := os.Open(fname)
+
+		if err != nil {
+			fmt.Fprintln(os.Stderr, err)
+			continue
+		}
+		if _, err := io.Copy(os.Stdout, file); err != nil {
+			fmt.Fprint(os.Stderr, err)
+			continue
+		}
+		file.Close()
+	}
 }
