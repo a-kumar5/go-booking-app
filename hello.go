@@ -1,11 +1,11 @@
 package hello
 
 import (
-	"strings"
 	"bufio"
-	"os"
 	"fmt"
+	"os"
 	"sort"
+	"strings"
 )
 
 func Say(names []string) string {
@@ -26,11 +26,11 @@ func Do(a [3]int, b []int) []int {
 	return c
 }
 
-func Sort(){
+func Sort() {
 	scan := bufio.NewScanner(os.Stdin)
 	words := make(map[string]int)
 	scan.Split(bufio.ScanWords)
-	for scan.Scan(){
+	for scan.Scan() {
 		words[scan.Text()]++
 	}
 	fmt.Println(len(words), "unique words")
@@ -48,7 +48,7 @@ func Sort(){
 
 	fmt.Println(ss)
 
-	sort.Slice(ss, func(i, j int) bool{
+	sort.Slice(ss, func(i, j int) bool {
 		return ss[i].val > ss[j].val
 	})
 	fmt.Println(ss)
