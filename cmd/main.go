@@ -31,7 +31,7 @@ func main() {
 		//fmt.Println("\n----------------------------------")
 		//size(file)
 		//fmt.Println("\n----------------------------------")
-		wordCount(file)
+		//wordCount(file)
 	}
 }
 
