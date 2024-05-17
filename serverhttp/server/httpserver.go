@@ -3,7 +3,6 @@ package main
 import (
 	"encoding/json"
 	"html/template"
-	"io"
 	"log"
 	"net/http"
 )
@@ -32,18 +31,9 @@ func handler(w http.ResponseWriter, r *http.Request) {
 
 	defer res.Body.Close()
 
-	body, err := io.ReadAll(res.Body)
-
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusServiceUnavailable)
-		return
-	}
-
 	var item todo
 
-	err = json.Unmarshal(body, &item)
-
-	if err != nil {
+	if err = json.NewDecoder(res.Body).Decode(&item); err != nil {
 		http.Error(w, err.Error(), http.StatusServiceUnavailable)
 		return
 	}
