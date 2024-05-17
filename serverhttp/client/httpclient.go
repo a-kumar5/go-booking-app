@@ -11,6 +11,7 @@ import (
 const URL = "https://jsonplaceholder.typicode.com/"
 
 type todo struct {
+	UserId    int    `json:userID`
 	ID        int    `json:id`
 	Title     string `json:title`
 	Completed bool   `json:completed`
