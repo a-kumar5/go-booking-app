@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"image/color"
 	"math"
 )
 
@@ -10,6 +11,31 @@ type Path []Point
 type IntList struct {
 	value int
 	Tail  *IntList
+}
+
+// Values maps a string key to a list of values.
+type Values map[string][]string
+
+type ColoredPoint struct {
+	Point
+	Color color.RGBA
+}
+
+type ColoredPoint struct {
+	*Point
+	Color color.RGBA
+}
+
+// Get returns the first value associated with the given key,
+// or "" if there are none.
+func (v Values) Get(key string) string {
+	if vs := v[key]; len(vs) > 0 {
+		return vs[0]
+	}
+	return ""
+}
+func (v Values) Add(key, value string) {
+	v[key] = append(v[key], value)
 }
 
 func (list *IntList) Sum() int {
@@ -44,29 +70,49 @@ func (p *Point) ScaleBy(factor float64) {
 }
 
 func main() {
-	a := IntList{1, &IntList{3, nil}}
-	b := IntList{2, &a}
-	fmt.Println((&b).Sum())
-	fmt.Println(b.Sum())
+	var cp ColoredPoint
+	cp.X = 1
+	fmt.Println(cp.Point.X) // 1
+	red := color.RGBA{255, 0, 0, 255}
+	blue := color.RGBA{0, 0, 255, 255}
+	var p = ColoredPoint{Point{1, 1}, red}
+	var q = ColoredPoint{Point{5, 4}, blue}
+	fmt.Println(p.Distance(q.Point)) // 5
+	p.ScaleBy(2)
+	q.ScaleBy(2)
+	fmt.Println(p.Distance(q.Point)) // 10
+	//p.Distance(q) // compile error - ./main.go:79:13: cannot use q (variable of type ColoredPoint) as Point value in argument to p.Distanc
 	/*
-		p := Point{1, 2}
-		q := Point{4, 6}
-		fmt.Println(Distance(p, q))
-		fmt.Println(p.Distance(q))
-		perim := Path{
-			{1, 1},
-			{5, 1},
-			{5, 4},
-			{1, 1},
-		}
-		fmt.Println(perim.Distance())
+		m := url.Values{"lang": {"en"}}
+		fmt.Println(m.Get("lang"))
+		m.Add("item", "1")
+		m.Add("item", "2")
+		fmt.Println(m.Get("q"))
+		fmt.Println(m.Get("item"))
+		fmt.Println(m["item"]
 
-		r := &Point{1, 2}
-		r.ScaleBy(2)
-		fmt.Println(*r)
-		s := Point{1, 2}
-		sptr := &s
-		sptr.ScaleBy(2)
-		fmt.Println(s)
+			a := IntList{1, &IntList{3, nil}}
+			b := IntList{2, &a}
+			fmt.Println((&b).Sum())
+			fmt.Println(b.Sum())
+				p := Point{1, 2}
+				q := Point{4, 6}
+				fmt.Println(Distance(p, q))
+				fmt.Println(p.Distance(q))
+				perim := Path{
+					{1, 1},
+					{5, 1},
+					{5, 4},
+					{1, 1},
+				}
+				fmt.Println(perim.Distance())
+
+				r := &Point{1, 2}
+				r.ScaleBy(2)
+				fmt.Println(*r)
+				s := Point{1, 2}
+				sptr := &s
+				sptr.ScaleBy(2)
+				fmt.Println(s)
 	*/
 }
