@@ -3,7 +3,9 @@ package main
 import (
 	"fmt"
 	"image/color"
+	"io"
 	"math"
+	"os"
 )
 
 type Point struct{ X, Y float64 }
@@ -18,11 +20,6 @@ type Values map[string][]string
 
 type ColoredPoint struct {
 	Point
-	Color color.RGBA
-}
-
-type ColoredPoint struct {
-	*Point
 	Color color.RGBA
 }
 
@@ -69,50 +66,67 @@ func (p *Point) ScaleBy(factor float64) {
 	p.Y *= factor
 }
 
+type ByteCounter int
+
+func (b *ByteCounter) Write(p []byte) (int, error) {
+	l := len(p)
+	*b += ByteCounter(l)
+	return l, nil
+}
+
 func main() {
-	var cp ColoredPoint
-	cp.X = 1
-	fmt.Println(cp.Point.X) // 1
-	red := color.RGBA{255, 0, 0, 255}
-	blue := color.RGBA{0, 0, 255, 255}
-	var p = ColoredPoint{Point{1, 1}, red}
-	var q = ColoredPoint{Point{5, 4}, blue}
-	fmt.Println(p.Distance(q.Point)) // 5
-	p.ScaleBy(2)
-	q.ScaleBy(2)
-	fmt.Println(p.Distance(q.Point)) // 10
-	//p.Distance(q) // compile error - ./main.go:79:13: cannot use q (variable of type ColoredPoint) as Point value in argument to p.Distanc
+	var c ByteCounter
+	f1, _ := os.Open("a.txt")
+	//f2, _ := os.Create("out.txt")
+	f2 := &c
+
+	n, _ := io.Copy(f2, f1)
+	fmt.Println("copied", n, "bytes")
+	fmt.Println(c)
 	/*
-		m := url.Values{"lang": {"en"}}
-		fmt.Println(m.Get("lang"))
-		m.Add("item", "1")
-		m.Add("item", "2")
-		fmt.Println(m.Get("q"))
-		fmt.Println(m.Get("item"))
-		fmt.Println(m["item"]
+		var cp ColoredPoint
+		cp.X = 1
+		fmt.Println(cp.Point.X) // 1
+		red := color.RGBA{255, 0, 0, 255}
+		blue := color.RGBA{0, 0, 255, 255}
+		var p = ColoredPoint{Point{1, 1}, red}
+		var q = ColoredPoint{Point{5, 4}, blue}
+		fmt.Println(p.Distance(q.Point)) // 5
+		p.ScaleBy(2)
+		q.ScaleBy(2)
+		fmt.Println(p.Distance(q.Point)) // 10
+		//p.Distance(q) // compile error - ./main.go:79:13: cannot use q (variable of type ColoredPoint) as Point value in argument to p.Distanc
 
-			a := IntList{1, &IntList{3, nil}}
-			b := IntList{2, &a}
-			fmt.Println((&b).Sum())
-			fmt.Println(b.Sum())
-				p := Point{1, 2}
-				q := Point{4, 6}
-				fmt.Println(Distance(p, q))
-				fmt.Println(p.Distance(q))
-				perim := Path{
-					{1, 1},
-					{5, 1},
-					{5, 4},
-					{1, 1},
-				}
-				fmt.Println(perim.Distance())
+			m := url.Values{"lang": {"en"}}
+			fmt.Println(m.Get("lang"))
+			m.Add("item", "1")
+			m.Add("item", "2")
+			fmt.Println(m.Get("q"))
+			fmt.Println(m.Get("item"))
+			fmt.Println(m["item"]
 
-				r := &Point{1, 2}
-				r.ScaleBy(2)
-				fmt.Println(*r)
-				s := Point{1, 2}
-				sptr := &s
-				sptr.ScaleBy(2)
-				fmt.Println(s)
+				a := IntList{1, &IntList{3, nil}}
+				b := IntList{2, &a}
+				fmt.Println((&b).Sum())
+				fmt.Println(b.Sum())
+					p := Point{1, 2}
+					q := Point{4, 6}
+					fmt.Println(Distance(p, q))
+					fmt.Println(p.Distance(q))
+					perim := Path{
+						{1, 1},
+						{5, 1},
+						{5, 4},
+						{1, 1},
+					}
+					fmt.Println(perim.Distance())
+
+					r := &Point{1, 2}
+					r.ScaleBy(2)
+					fmt.Println(*r)
+					s := Point{1, 2}
+					sptr := &s
+					sptr.ScaleBy(2)
+					fmt.Println(s)
 	*/
 }
