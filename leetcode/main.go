@@ -74,6 +74,39 @@ func isPalindrome(x int) bool {
 	return reversed == original
 }
 
+/*
+Symbol       Value
+I             1
+V             5
+X             10
+L             50
+C             100
+D             500
+M             1000
+*/
+func romanToInt(s string) int {
+	romanLiteral := map[byte]int{
+		'I': 1,
+		'V': 5,
+		'X': 10,
+		'L': 50,
+		'C': 100,
+		'D': 500,
+		'M': 1000,
+	}
+	//fmt.Println(romanLiteral)
+	sum := 0
+	for i := 0; i < len(s); i++ {
+		val := romanLiteral[s[i]]
+		if i < len(s)-1 && val < romanLiteral[s[i+1]] {
+			sum -= val
+		} else {
+			sum += val
+		}
+	}
+	return sum
+}
+
 func main() {
 	//fmt.Println("Hello, 世界")
 	//var s = "anagram"
@@ -82,5 +115,7 @@ func main() {
 	//nums := []int{2, 7, 11, 15}
 	//num := twoSum(nums, 9)
 	//fmt.Println(num)
-	fmt.Println(isPalindrome(121))
+	//fmt.Println(isPalindrome(121))
+	s := "MCMXCIV"
+	fmt.Println(romanToInt(s))
 }
