@@ -61,12 +61,26 @@ func twoSum(nums []int, target int) []int {
 	return []int{}
 }
 
+func isPalindrome(x int) bool {
+	if x < 0 {
+		return false
+	}
+	original := x
+	reversed := 0
+	for x != 0 {
+		reversed = reversed*10 + x%10
+		x /= 10
+	}
+	return reversed == original
+}
+
 func main() {
 	//fmt.Println("Hello, 世界")
 	//var s = "anagram"
 	//var t = "nagaram"
 	//fmt.Println(isAnagram(s, t))
-	nums := []int{2, 7, 11, 15}
-	num := twoSum(nums, 9)
-	fmt.Println(num)
+	//nums := []int{2, 7, 11, 15}
+	//num := twoSum(nums, 9)
+	//fmt.Println(num)
+	fmt.Println(isPalindrome(121))
 }
